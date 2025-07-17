@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Date Invitation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap');
+        
+        :root {
+            --primary-pink: #ff85a2;
+            --dark-pink: #e75480;
+            --light-pink: #ffb6c1;
+            --white: #fff8fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff5f7;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/99a983c1-0f1c-4b7f-b62c-46a4f1040b8d.png');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-blend-mode: overlay;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(233, 30, 99, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background-color: var(--light-pink);
+            border-radius: 50%;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        .container::after {
+            content: "";
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            width: 150px;
+            height: 150px;
+            background-color: var(--light-pink);
+            border-radius: 50%;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--dark-pink);
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .heart-decoration {
+            font-size: 1.5rem;
+            color: var(--primary-pink);
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .question-container {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--primary-pink);
+        }
+        
+        .question {
+            font-weight: 600;
+            color: var(--dark-pink);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+        
+        .option-btn {
+            background-color: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(231, 84, 128, 0.3);
+        }
+        
+        .option-btn:hover {
+            background-color: var(--dark-pink);
+            transform: translateY(-2px);
+        }
+        
+        .option-btn.selected {
+            background-color: var(--dark-pink);
+            box-shadow: 0 2px 5px rgba(231, 84, 128, 0.5);
+            transform: translateY(0);
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 1rem;
+        }
+        
+        .time-btn {
+            background-color: var(--white);
+            color: var(--dark-pink);
+            border: 2px solid var(--primary-pink);
+            padding: 0.6rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .time-btn:hover {
+            background-color: var(--primary-pink);
+            color: white;
+        }
+        
+        .time-btn.selected {
+            background-color: var(--primary-pink);
+            color: white;
+            border-color: var(--dark-pink);
+        }
+        
+        .confirmation-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--dark-pink);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 12px rgba(231, 84, 128, 0.4);
+            text-align: center;
+        }
+        
+        .confirmation-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(231, 84, 128, 0.5);
+        }
+        
+        .final-message {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 1.3rem;
+            color: var(--dark-pink);
+            font-weight: 600;
+            display: none;
+        }
+        
+        .confetti {
+            position: fixed;
+            top: -10px;
+            pointer-events: none;
+            z-index: 100;
+        }
+        
+        .flower-decoration {
+            position: absolute;
+            width: 60px;
+            opacity: 0.7;
+        }
+        
+        .flower-1 {
+            top: -30px;
+            left: -30px;
+            transform: rotate(30deg);
+        }
+        
+        .flower-2 {
+            bottom: 0;
+            right: -20px;
+            transform: rotate(135deg);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 0.5rem;
+                padding: 1rem;
+                border-radius: 0;
+            }
+            
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+            
+            .options, .time-slots {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .option-btn, .time-btn {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+            
+            .confirmation-btn {
+                margin-top: 1.5rem;
+                font-size: 1rem;
+                padding: 0.9rem;
+            }
+      .message-container {
+    background-color: var(--white);
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid var(--primary-pink);
+    position: relative;
+}
+
+.message-container::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 60px;
+    height: 60px;
+    background-color: var(--light-pink);
+    border-radius: 50%;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+.message-container::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 60px;
+    height: 60px;
+    background-color: var(--light-pink);
+    border-radius: 50%;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+.message-label {
+    font-weight: 600;
+    color: var(--dark-pink);
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 1.2rem;
+}
+
+.message-box {
+    width: 100%;
+    height: 120px; /* Increased height for better usability */
+    border: 2px solid var(--primary-pink);
+    border-radius: 8px;
+    padding: 0.8rem; /* Increased padding for comfort */
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: var(--dark-pink);
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+    resize: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.message-box:focus {
+    outline: none;
+    border-color: var(--dark-pink);
+    box-shadow: 0 0 5px rgba(231, 84, 128, 0.5);
+}
+
+.confirmation-btn {
+    display: block;
+    width: 100%;
+    background-color: var(--dark-pink);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 12px rgba(231, 84, 128, 0.4);
+}
+
+.confirmation-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(231, 84, 128, 0.5);
+}
+
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ef749139-aed0-4594-8dc9-1fd3269b1f13.png" alt="Pink floral decoration" class="flower-decoration flower-1" />
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b7498ae1-db8c-4047-b41b-f5b4704bbd2f.png" alt="Pink floral decoration" class="flower-decoration flower-2" />
+        
+        <h1>My Special Invitation</h1>
+        <div class="heart-decoration">❤️ ❤️ ❤️</div>
+        
+        <div id="questionFlow">
+            <!-- Questions will be loaded dynamically here -->
+        </div>
+      <div class="message-container">
+    <label for="userMessage" class="message-label"></label>
+  
+</div>
+
+
+        <div class="final-message" id="finalMessage">
+            Hi Avi! I love you! See you on July 22! ❤️
+        </div>
+    </div>
+
+    <script>
+       let responses = {
+    confirmation: null,
+    activities: [],
+    morningTime: null,
+    afternoonTime: null,
+    userMessage: null // Added to store the user message
+};
+
+const questions = [
+    {
+        id: 'confirmation',
+        question: "Hello sunshine! Can I ask you for a date on July 22, 2025, yes or yes?",
+        options: ["YES", "YES!!!"],
+        singleSelect: true
+    },
+    {
+        id: 'activities',
+        question: "What would you like to do on our date? (Pili ka dawa piraaa)",
+        options: ["Play Guitar", "Go Eating", "Picnic", "Walk", "Surprise Me!"],
+        singleSelect: false
+    },
+    {
+        id: 'time',
+        question: "What part of the day works best on July 22?",
+        subQuestions: {
+            'Morning': ['8 AM', '9 AM', '10 AM', '11 AM'],
+            'Afternoon': ['1 PM', '2 PM', '3 PM', '4 PM']
+        }
+    }
+];
+
+let currentQuestionIndex = 0;
+
+// Render initial question
+renderQuestion();
+
+function renderQuestion() {
+    const questionFlow = document.getElementById('questionFlow');
+    const currentQuestion = questions[currentQuestionIndex];
+
+    let html = `
+        <div class="question-container">
+            <div class="question">${currentQuestion.question}</div>
+            <div class="options">
+    `;
+
+    if (currentQuestion.id === 'time') {
+        html += Object.entries(currentQuestion.subQuestions).map(([period, times]) => `
+            <button class="time-btn" onclick="showTimeOptions('${period}')">${period}</button>
+        `).join('');
+        html += `<div id="specificTimes" class="time-slots"></div>`;
+    } else {
+        html += currentQuestion.options.map(option => `
+            <button class="option-btn" onclick="handleOptionSelect('${currentQuestion.id}', '${option}', event)">
+                ${option}
+            </button>
+        `).join('');
+    }
+
+    html += `</div></div>`;
+
+    // Add back/next navigation
+    if (currentQuestionIndex > 0) {
+        html += `<button class="navigation-btn back" style="background-color: white; color: var(--primary-pink); border: 2px solid var(--primary-pink); padding: 0.8rem 1.5rem; border-radius: 50px; cursor: pointer; font-weight: 500; transition: all 0.3s ease;" onclick="prevQuestion()">Back</button>`;
+    }
+    if (currentQuestionIndex < questions.length - 1) {
+        html += `<button class="navigation-btn next" style="background-color: var(--dark-pink); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 50px; cursor: pointer; font-weight: 500; transition: all 0.3s ease; margin-left: 10px;" onclick="nextQuestion()">Next</button>`;
+    } else {
+        html += `<button class="navigation-btn next" style="background-color: var(--dark-pink); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 50px; cursor: pointer; font-weight: 500; transition: all 0.3s ease; margin-left: 10px;" onclick="renderMessageBox()">Confirm Date</button>`;
+    }
+
+    questionFlow.innerHTML = html;
+}
+
+function handleOptionSelect(questionId, option, event) {
+    const btn = event.target;
+
+    if (questionId === 'confirmation') {
+        // Single select
+        document.querySelectorAll(`.${questionId}-option`).forEach(b => b.classList.remove('selected'));
+        responses.confirmation = option;
+        btn.classList.add('selected');
+    } else if (questionId === 'activities') {
+        // Multi-select toggle
+        btn.classList.toggle('selected');
+        if (btn.classList.contains('selected')) {
+            if (!responses.activities.includes(option)) {
+                responses.activities.push(option);
+            }
+        } else {
+            responses.activities = responses.activities.filter(a => a !== option);
+        }
+    }
+}
+
+function showTimeOptions(period) {
+    const container = document.getElementById('specificTimes');
+    container.innerHTML = '';
+    const times = questions[currentQuestionIndex].subQuestions[period];
+
+    times.forEach(time => {
+        const btn = document.createElement('button');
+        btn.className = 'time-btn';
+        btn.textContent = time;
+        btn.onclick = () => {
+            document.querySelectorAll('#specificTimes .time-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            if (period === 'Morning') {
+                responses.morningTime = time;
+            } else {
+                responses.afternoonTime = time;
+            }
+        };
+        container.appendChild(btn);
+    });
+}
+
+function nextQuestion() {
+    if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+    } else {
+        renderMessageBox(); // Render the message box when all questions are answered
+    }
+}
+
+function renderMessageBox() {
+    const questionFlow = document.getElementById('questionFlow');
+    const messageBoxHtml = `
+        <div class="message-container">
+            <div class="question">Any message?</div>
+            <textarea id="userMessage" class="message-box" placeholder="Type your message here..."></textarea>
+        </div>
+        <button class="confirmation-btn" onclick="confirmDate()">Confirm Date</button>
+    `;
+    questionFlow.innerHTML += messageBoxHtml;
+}
+
+function confirmDate() {
+    if (!responses.confirmation || responses.activities.length === 0 || 
+       (!responses.morningTime && !responses.afternoonTime)) {
+        alert("Please answer all questions before confirming!");
+        return;
+    }
+
+    // Capture the user message
+    const userMessage = document.getElementById('userMessage').value;
+    responses.userMessage = userMessage; // Add this line to store the message
+
+    // Create confetti effect
+    createConfetti();
+    
+    // Show final message
+    document.getElementById('finalMessage').style.display = 'block';
+    document.getElementById('finalMessage').scrollIntoView({ behavior: 'smooth' });
+
+    const formData = new FormData();
+    formData.append('responses', JSON.stringify(responses));
+    fetch('https://formsubmit.co/ajax/0a5c031cddc8e8797e530a9979443cb5', {
+        method: 'POST',
+        body: formData
+    });
+    
+    alert("Thanks for confirming! I'll be in touch soon ❤️");
+}
+
+function prevQuestion() {
+    currentQuestionIndex--;
+    renderQuestion();
+}
+
+// Share functionality
+function shareResponse() {
+    let activitiesText = responses.activities.length > 1 ? 
+        responses.activities.slice(0, -1).join(', ') + ' and ' + responses.activities.slice(-1) : 
+        responses.activities[0];
+    const time = responses.morningTime || responses.afternoonTime;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'Our Date Plans!',
+            text: `I'm excited for our date on July 22! Let's do ${activitiesText} at ${time}`,
+            url: window.location.href
+        }).catch(err => console.log('Error sharing:', err));
+    } else {
+        // Fallback for desktop
+        alert(`Share this URL:\n${window.location.href}\n\nOur plans: ${activitiesText} at ${time}`);
+    }
+}
+
+function createConfetti() {
+    const colors = ['#ff85a2', '#e75480', '#ffb6c1', '#ffb8d9'];
+    
+    for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        
+        // Random properties
+        const size = Math.random() * 10 + 5;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const left = Math.random() * window.innerWidth;
+        const duration = Math.random() * 3 + 2;
+        const delay = Math.random() * 2;
+        const shape = Math.random() > 0.5 ? '50%' : '0';
+        
+        confetti.style.width = `${size}px`;
+        confetti.style.height = `${size}px`;
+        confetti.style.backgroundColor = color;
+        confetti.style.left = `${left}px`;
+        confetti.style.borderRadius = shape;
+        confetti.style.animation = `fall ${duration}s linear ${delay}s forwards`;
+        
+        document.body.appendChild(confetti);
+        
+        // Remove confetti after animation
+        setTimeout(() => {
+            confetti.remove();
+        }, (duration + delay) * 1000);
+    }
+    
+    // Add keyframe animation for falling
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+    </script>
+</body>
+</html>
